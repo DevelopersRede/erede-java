@@ -12,6 +12,9 @@ public class Transaction {
   public static final Integer ORIGIN_EREDE = 1;
   public static final Integer ORIGIN_VISA_CHECKOUT = 4;
   public static final Integer ORIGIN_MASTERPASS = 6;
+
+  @SerializedName("additional")
+  private Additional additional;
   @SerializedName("amount")
   private Integer amount;
   @SerializedName("antifraud")
@@ -104,6 +107,16 @@ public class Transaction {
     this.urls.add(url);
 
     return this;
+  }
+
+  public Transaction additional(String gateway, String module) {
+    additional = new Additional(gateway, module);
+
+    return this;
+  }
+
+  public Additional getAdditional() {
+    return additional;
   }
 
   public Transaction addUrl(String url) {
