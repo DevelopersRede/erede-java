@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.util.logging.Logger;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 
 public class CaptureTransactionService extends AbstractTransactionService {
@@ -14,6 +15,13 @@ public class CaptureTransactionService extends AbstractTransactionService {
   public CaptureTransactionService(Store store,
       Transaction transaction, Logger logger) {
     super(store, transaction, logger);
+  }
+
+  @Override
+  public URIBuilder getUri() throws URISyntaxException {
+    URIBuilder uriBuilder = super.getUri();
+
+    return uriBuilder.setPath(String.format("%s/%s", uriBuilder.getPath(), transaction.getTid()));
   }
 
   @Override

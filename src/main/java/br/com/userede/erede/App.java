@@ -27,9 +27,15 @@ public class App {
     transaction = (new eRede(store).create(transaction));
 
     if (transaction.getReturnCode().equals("00")) {
-      System.out.printf("Transação autorizada com sucesso: %s", transaction.getTid());
+      System.out.printf("Transação autorizada com sucesso: %s\n", transaction.getTid());
 
-      transaction = (new eRede(store)).get(transaction.getTid());
+      transaction = (new eRede(store)).capture(transaction);
+
+      transaction = new Transaction(20.99, transaction.getReference()).setTid(transaction.getTid());
+
+      transaction = (new eRede(store)).cancel(transaction);
+
+
 
       System.out.println(transaction.getTid());
     }

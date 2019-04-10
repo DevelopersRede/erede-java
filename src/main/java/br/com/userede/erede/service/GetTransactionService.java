@@ -31,22 +31,24 @@ public class GetTransactionService extends AbstractTransactionService {
   }
 
   @Override
+  public URIBuilder getUri() throws URISyntaxException {
+    URIBuilder uriBuilder = super.getUri();
+
+    if (reference != null) {
+      return uriBuilder.setParameter("reference", reference);
+    }
+
+    if (refund) {
+      return uriBuilder.setPath(String.format("%s/%s/refunds", uriBuilder.getPath(), tid));
+    }
+
+    return uriBuilder.setPath(String.format("%s/%s", uriBuilder.getPath(), tid));
+  }
+
+  @Override
   public Transaction execute() {
     try {
-      String uri = store.getEnvironment().getEndpoint("transactions");
-      URIBuilder uriBuilder;
-
-      if (refund) {
-        uri = String.format("%s/%s/refunds", uri, tid);
-      }
-
-      uriBuilder = new URIBuilder(uri);
-
-      if (reference != null) {
-        uriBuilder.setParameter("reference", reference);
-      }
-
-      HttpGet request = new HttpGet(uriBuilder.build());
+      HttpGet request = new HttpGet(getUri().build());
 
       return sendRequest(request);
     } catch (URISyntaxException e) {
