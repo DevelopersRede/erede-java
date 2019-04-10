@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
@@ -18,6 +19,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -48,6 +50,7 @@ abstract class AbstractTransactionService {
 
     request.addHeader(HttpHeaders.USER_AGENT, eRede.USER_AGENT);
     request.addHeader(HttpHeaders.ACCEPT, "application/json");
+    request.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
     request.addHeader(HttpHeaders.AUTHORIZATION, "Basic " + credentials);
 
     logger.log(Level.FINE, request.getRequestLine().toString());
