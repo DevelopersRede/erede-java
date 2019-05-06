@@ -10,7 +10,8 @@ public class Transaction extends AbstractTransaction<Boolean> {
   public static final Integer ORIGIN_MASTERPASS = 6;
 
   public Transaction(double amount, String reference) {
-    this((int) Math.round(amount * 100), reference);
+    setAmount(amount);
+    setReference(reference);
   }
 
   public Transaction(int amount, String reference) {
