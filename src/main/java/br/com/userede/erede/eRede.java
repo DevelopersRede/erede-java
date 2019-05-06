@@ -24,46 +24,46 @@ public class eRede {
     this.logger = logger;
   }
 
-  public Transaction authorize(Transaction transaction) {
+  public TransactionResponse authorize(Transaction transaction) {
     return create(transaction);
   }
 
-  public Transaction create(Transaction transaction) {
+  public TransactionResponse create(Transaction transaction) {
     CreateTransactionService createTransactionService = new CreateTransactionService(store,
         transaction, logger);
 
     return createTransactionService.execute();
   }
 
-  public Transaction cancel(Transaction transaction) {
+  public TransactionResponse cancel(Transaction transaction) {
     CancelTransactionService cancelTransactionService = new CancelTransactionService(store,
         transaction, logger);
 
     return cancelTransactionService.execute();
   }
 
-  public Transaction capture(Transaction transaction) {
+  public TransactionResponse capture(Transaction transaction) {
     CaptureTransactionService captureTransactionService = new CaptureTransactionService(store,
         transaction, logger);
 
     return captureTransactionService.execute();
   }
 
-  public Transaction get(String tid) {
+  public TransactionResponse get(String tid) {
     GetTransactionService getTransactionService = new GetTransactionService(store, null, logger);
     getTransactionService.setTid(tid);
 
     return getTransactionService.execute();
   }
 
-  public Transaction getByReference(String reference) {
+  public TransactionResponse getByReference(String reference) {
     GetTransactionService getTransactionService = new GetTransactionService(store, null, logger);
     getTransactionService.setReference(reference);
 
     return getTransactionService.execute();
   }
 
-  public Transaction getRefunds(String tid) {
+  public TransactionResponse getRefunds(String tid) {
     GetTransactionService getTransactionService = new GetTransactionService(store, null, logger);
     getTransactionService.setTid(tid);
     getTransactionService.setRefund(true);
@@ -71,21 +71,11 @@ public class eRede {
     return getTransactionService.execute();
   }
 
-  public Transaction zero(Transaction transaction) {
-    double amount = transaction.getAmount();
-    Boolean capture = transaction.getCapture();
-
+  public TransactionResponse zero(Transaction transaction) {
     transaction.setAmount(0);
     transaction.capture();
 
-    transaction = create(transaction);
-
-    transaction.setAmount(amount);
-    transaction.capture(capture);
-
-    return transaction;
-
-
+    return create(transaction);
   }
 
 }

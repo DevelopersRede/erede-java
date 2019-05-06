@@ -2,6 +2,7 @@ package br.com.userede.erede.service;
 
 import br.com.userede.erede.Store;
 import br.com.userede.erede.Transaction;
+import br.com.userede.erede.TransactionResponse;
 import br.com.userede.erede.eRede;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -35,13 +36,13 @@ abstract class AbstractTransactionService {
     this.logger = logger;
   }
 
-  abstract public Transaction execute();
+  abstract public TransactionResponse execute();
 
   URIBuilder getUri() throws URISyntaxException {
     return new URIBuilder(store.getEnvironment().getEndpoint("transactions"));
   }
 
-  Transaction sendRequest(HttpUriRequest request) {
+  TransactionResponse sendRequest(HttpUriRequest request) {
     String credentials = Base64.getEncoder()
         .encodeToString(String.format("%s:%s", store.getFiliation(), store.getToken()).getBytes(
             StandardCharsets.US_ASCII));
@@ -64,7 +65,7 @@ abstract class AbstractTransactionService {
 
       String response = parseResponse(httpResponse);
 
-      return new Gson().fromJson(response, Transaction.class);
+      return new Gson().fromJson(response, TransactionResponse.class);
     } catch (IOException e) {
       e.printStackTrace();
     }

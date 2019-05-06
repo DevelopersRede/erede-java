@@ -2,6 +2,7 @@ package br.com.userede.erede.service;
 
 import br.com.userede.erede.Store;
 import br.com.userede.erede.Transaction;
+import br.com.userede.erede.TransactionResponse;
 import java.net.URISyntaxException;
 import java.util.logging.Logger;
 import org.apache.http.client.methods.HttpGet;
@@ -46,7 +47,7 @@ public class GetTransactionService extends AbstractTransactionService {
   }
 
   @Override
-  public Transaction execute() {
+  public TransactionResponse execute() {
     try {
       HttpGet request = new HttpGet(getUri().build());
 

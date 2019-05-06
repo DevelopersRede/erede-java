@@ -2,6 +2,7 @@ package br.com.userede.erede.service;
 
 import br.com.userede.erede.Store;
 import br.com.userede.erede.Transaction;
+import br.com.userede.erede.TransactionResponse;
 import com.google.gson.GsonBuilder;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
@@ -16,7 +17,7 @@ public class CreateTransactionService extends AbstractTransactionService {
   }
 
   @Override
-  public Transaction execute() {
+  public TransactionResponse execute() {
     try {
       HttpPost request = new HttpPost(getUri().build());
       String entity = new GsonBuilder().create().toJson(transaction);
