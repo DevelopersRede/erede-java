@@ -458,8 +458,16 @@ public class Transaction {
 
   public Transaction debitCard(String cardNumber, String securityCode, String expirationMonth,
       String expirationYear, String cardHolderName) {
-    return setCard(cardNumber, securityCode, expirationMonth, expirationYear, cardHolderName,
+
+    setCard(cardNumber, securityCode, expirationMonth, expirationYear, cardHolderName,
         Transaction.DEBIT);
+
+    capture = true;
+    threeDSecure = new ThreeDSecure();
+    threeDSecure.setEmbedded(true);
+    threeDSecure.setOnFailure(ThreeDSecure.DECLINE_ON_FAILURE);
+
+    return this;
   }
 
   public Transaction creditCard(String cardNumber, String securityCode, String expirationMonth,

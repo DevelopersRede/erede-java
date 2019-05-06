@@ -11,6 +11,9 @@ public class Url {
   @SerializedName("type")
   public String type = Url.CALLBACK;
 
+  @SerializedName("kind")
+  public String kind;
+
   @SerializedName("url")
   private String url;
 
@@ -18,12 +21,13 @@ public class Url {
   }
 
   public Url(String url) {
-    this(url, Url.CALLBACK);
+    this.url = url;
+    this.type = Url.CALLBACK;
   }
 
-  public Url(String url, String type) {
+  public Url(String url, String kind) {
     this.url = url;
-    this.type = type;
+    this.kind = kind;
   }
 
   public String getType() {
@@ -32,6 +36,15 @@ public class Url {
 
   public Url setType(String type) {
     this.type = type;
+    return this;
+  }
+
+  public String getKind() {
+    return kind;
+  }
+
+  public Url setKind(String kind) {
+    this.kind = kind;
     return this;
   }
 
