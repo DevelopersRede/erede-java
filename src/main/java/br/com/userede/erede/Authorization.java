@@ -64,8 +64,8 @@ public class Authorization {
     return this;
   }
 
-  public int getAmount() {
-    return amount;
+  public double getAmount() {
+    return (double) amount / 100;
   }
 
   public Authorization setAmount(int amount) {

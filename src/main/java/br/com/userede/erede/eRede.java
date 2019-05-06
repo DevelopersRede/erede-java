@@ -72,7 +72,7 @@ public class eRede {
   }
 
   public Transaction zero(Transaction transaction) {
-    Integer amount = transaction.getAmount();
+    double amount = transaction.getAmount();
     Boolean capture = transaction.getCapture();
 
     transaction.setAmount(0);

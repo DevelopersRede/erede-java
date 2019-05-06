@@ -141,8 +141,12 @@ public class Transaction {
     return this;
   }
 
-  public Integer getAmount() {
-    return amount;
+  public double getAmount() {
+    return (double) amount / 100;
+  }
+
+  public Transaction setAmount(double amount) {
+    return setAmount(Math.round(amount * 100));
   }
 
   public Transaction setAmount(Integer amount) {
