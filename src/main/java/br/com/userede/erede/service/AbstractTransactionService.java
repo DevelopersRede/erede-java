@@ -4,6 +4,8 @@ import br.com.userede.erede.Store;
 import br.com.userede.erede.Transaction;
 import br.com.userede.erede.TransactionResponse;
 import br.com.userede.erede.eRede;
+import br.com.userede.erede.service.error.RedeError;
+import br.com.userede.erede.service.error.RedeException;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -59,13 +61,19 @@ abstract class AbstractTransactionService {
       HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
       int status = httpResponse.getStatusLine().getStatusCode();
 
+      String response = parseResponse(httpResponse);
+      TransactionResponse transactionResponse = new Gson()
+          .fromJson(response, TransactionResponse.class);
+
       if (status < 200 || status >= 400) {
-        throw new RuntimeException(httpResponse.getStatusLine().toString());
+        RedeError redeError = new RedeError(transactionResponse.getReturnCode(),
+            transactionResponse.getReturnMessage());
+
+        throw new RedeException(httpResponse.getStatusLine().toString(), redeError,
+            transactionResponse);
       }
 
-      String response = parseResponse(httpResponse);
-
-      return new Gson().fromJson(response, TransactionResponse.class);
+      return transactionResponse;
     } catch (IOException e) {
       e.printStackTrace();
     }
