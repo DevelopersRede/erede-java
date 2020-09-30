@@ -81,6 +81,15 @@ public class AbstractTransaction<C> {
   @SerializedName("links")
   private List<Link> links;
 
+  @SerializedName("SubMerchant")
+  private SubMerchant submerchant;
+
+  @SerializedName("PaymentFacilitatorID")
+  private Long paymentFacilitatorID;
+
+  @SerializedName("IndependentSalesOrganizationID")
+  private String independentSalesOrganizationID;
+
   private void prepareUrls() {
     if (urls == null) {
       urls = new ArrayList<>();
@@ -446,4 +455,32 @@ public class AbstractTransaction<C> {
     this.links = links;
     return this;
   }
+
+	public SubMerchant getSubmerchant() {
+		return submerchant;
+	}
+
+	public AbstractTransaction<C> setSubmerchant(SubMerchant submerchant) {
+		this.submerchant = submerchant;
+		return this;
+	}
+
+	public Long getPaymentFacilitatorID() {
+		return paymentFacilitatorID;
+	}
+
+	public AbstractTransaction<C> setPaymentFacilitatorID(Long paymentFacilitatorID) {
+		this.paymentFacilitatorID = paymentFacilitatorID;
+		return this;
+	}
+
+	public String getIndependentSalesOrganizationID() {
+		return independentSalesOrganizationID;
+	}
+
+	public AbstractTransaction<C> setIndependentSalesOrganizationID(String independentSalesOrganizationID) {
+		this.independentSalesOrganizationID = independentSalesOrganizationID;
+		return this;
+	}
+
 }
