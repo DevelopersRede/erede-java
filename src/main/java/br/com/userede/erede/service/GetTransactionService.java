@@ -3,8 +3,10 @@ package br.com.userede.erede.service;
 import br.com.userede.erede.Store;
 import br.com.userede.erede.Transaction;
 import br.com.userede.erede.TransactionResponse;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.logging.Logger;
+
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 
@@ -47,15 +49,8 @@ public class GetTransactionService extends AbstractTransactionService {
   }
 
   @Override
-  public TransactionResponse execute() {
-    try {
+  public TransactionResponse execute() throws IOException, URISyntaxException {
       HttpGet request = new HttpGet(getUri().build());
-
       return sendRequest(request);
-    } catch (URISyntaxException e) {
-      e.printStackTrace();
-    }
-
-    return null;
   }
 }

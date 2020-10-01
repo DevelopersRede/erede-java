@@ -17,6 +17,7 @@ import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
@@ -38,48 +39,38 @@ abstract class AbstractTransactionService {
     this.logger = logger;
   }
 
-  abstract public TransactionResponse execute();
+  public abstract TransactionResponse execute() throws URISyntaxException, IOException;
 
   URIBuilder getUri() throws URISyntaxException {
     return new URIBuilder(store.getEnvironment().getEndpoint("transactions"));
   }
 
-  TransactionResponse sendRequest(HttpUriRequest request) {
-    String credentials = Base64.getEncoder()
-        .encodeToString(String.format("%s:%s", store.getFiliation(), store.getToken()).getBytes(
-            StandardCharsets.US_ASCII));
+	TransactionResponse sendRequest(HttpUriRequest request) throws IOException {
+		String credentials = Base64.getEncoder().encodeToString(
+				String.format("%s:%s", store.getFiliation(), store.getToken()).getBytes(StandardCharsets.US_ASCII));
 
-    request
-        .addHeader(HttpHeaders.USER_AGENT, String.format(eRede.USER_AGENT, store.getFiliation()));
-    request.addHeader(HttpHeaders.ACCEPT, "application/json");
-    request.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-    request.addHeader(HttpHeaders.AUTHORIZATION, "Basic " + credentials);
+		request.addHeader(HttpHeaders.USER_AGENT, String.format(eRede.USER_AGENT, store.getFiliation()));
+		request.addHeader(HttpHeaders.ACCEPT, "application/json");
+		request.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+		request.addHeader(HttpHeaders.AUTHORIZATION, "Basic " + credentials);
 
-    logger.log(Level.FINE, request.getRequestLine().toString());
+		logger.log(Level.FINE, request.getRequestLine().toString());
 
-    try {
-      HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
-      int status = httpResponse.getStatusLine().getStatusCode();
+		HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+		int status = httpResponse.getStatusLine().getStatusCode();
 
-      String response = parseResponse(httpResponse);
-      TransactionResponse transactionResponse = new Gson()
-          .fromJson(response, TransactionResponse.class);
+		String response = parseResponse(httpResponse);
+		TransactionResponse transactionResponse = new Gson().fromJson(response, TransactionResponse.class);
 
-      if (status < 200 || status >= 400) {
-        RedeError redeError = new RedeError(transactionResponse.getReturnCode(),
-            transactionResponse.getReturnMessage());
+		if (status < 200 || status >= 400) {
+			RedeError redeError = new RedeError(transactionResponse.getReturnCode(),
+					transactionResponse.getReturnMessage() + " Original Request:" + request.getRequestLine().toString() + " Response: "
+							+ response);
 
-        throw new RedeException(httpResponse.getStatusLine().toString(), redeError,
-            transactionResponse);
-      }
-
-      return transactionResponse;
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    return null;
-  }
+			throw new RedeException(httpResponse.getStatusLine().toString(), redeError, transactionResponse);
+		}
+		return transactionResponse;
+	}
 
   private String parseResponse(HttpResponse response) throws IOException {
     HttpEntity responseEntity = response.getEntity();
