@@ -55,6 +55,9 @@ public class Authorization {
   @SerializedName("tid")
   private String tid;
 
+  @SerializedName("Brand")
+  private Brand brand;
+
   public String getAffiliation() {
     return affiliation;
   }
@@ -206,5 +209,14 @@ public class Authorization {
   public Authorization setTid(String tid) {
     this.tid = tid;
     return this;
+  }
+
+  public Brand getBrand() {
+	return brand;
+  }
+
+  public Authorization setBrand(Brand brand) {
+	this.brand = brand;
+	return this;
   }
 }

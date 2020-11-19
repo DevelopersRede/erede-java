@@ -1,12 +1,5 @@
 package br.com.userede.erede.service;
 
-import br.com.userede.erede.Store;
-import br.com.userede.erede.Transaction;
-import br.com.userede.erede.TransactionResponse;
-import br.com.userede.erede.eRede;
-import br.com.userede.erede.service.error.RedeError;
-import br.com.userede.erede.service.error.RedeException;
-import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,10 +19,19 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClientBuilder;
 
+import com.google.gson.Gson;
+
+import br.com.userede.erede.Store;
+import br.com.userede.erede.Transaction;
+import br.com.userede.erede.TransactionResponse;
+import br.com.userede.erede.service.error.RedeError;
+import br.com.userede.erede.service.error.RedeException;
+
 abstract class AbstractTransactionService {
 
   final Store store;
   final Transaction transaction;
+  private String userAgent;
 
   private final Logger logger;
 
@@ -49,11 +51,15 @@ abstract class AbstractTransactionService {
 		String credentials = Base64.getEncoder().encodeToString(
 				String.format("%s:%s", store.getFiliation(), store.getToken()).getBytes(StandardCharsets.US_ASCII));
 
-		request.addHeader(HttpHeaders.USER_AGENT, String.format(eRede.USER_AGENT, store.getFiliation()));
+		request.addHeader(HttpHeaders.USER_AGENT, this.userAgent);
 		request.addHeader(HttpHeaders.ACCEPT, "application/json");
 		request.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
 		request.addHeader(HttpHeaders.AUTHORIZATION, "Basic " + credentials);
+		if (store.getBrandReturnOpen()) {
+			request.addHeader("Transaction-Response", "brand-return-opened");
+		}
 
+		System.out.println("line:" + request.getRequestLine().toString());
 		logger.log(Level.FINE, request.getRequestLine().toString());
 
 		HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
@@ -93,4 +99,9 @@ abstract class AbstractTransactionService {
 
     return responseBuilder.toString();
   }
+
+  public void setUserAgent(String userAgent) {
+	this.userAgent = userAgent;
+  }
+
 }

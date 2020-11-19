@@ -5,6 +5,7 @@ public class Store {
   private Environment environment;
   private String filiation;
   private String token;
+  private Boolean brandReturnOpen;
 
   public Store(String filiation, String token, Environment environment) {
     this.environment = environment;
@@ -41,5 +42,13 @@ public class Store {
   public Store setToken(String token) {
     this.token = token;
     return this;
+  }
+
+  public Boolean getBrandReturnOpen() {
+	return brandReturnOpen;
+  }
+
+  public void setBrandReturnOpen(Boolean brandReturnOpen) {
+	this.brandReturnOpen = brandReturnOpen;
   }
 }

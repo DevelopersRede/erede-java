@@ -34,6 +34,7 @@ public class eRede {
   public TransactionResponse create(Transaction transaction) throws URISyntaxException, IOException {
     CreateTransactionService createTransactionService = new CreateTransactionService(store,
         transaction, logger);
+    createTransactionService.setUserAgent(String.format(eRede.USER_AGENT, store.getFiliation()));
 
     return createTransactionService.execute();
   }
@@ -41,6 +42,7 @@ public class eRede {
   public TransactionResponse cancel(Transaction transaction) throws IOException, URISyntaxException {
     CancelTransactionService cancelTransactionService = new CancelTransactionService(store,
         transaction, logger);
+    cancelTransactionService.setUserAgent(String.format(eRede.USER_AGENT, store.getFiliation()));
 
     return cancelTransactionService.execute();
   }
@@ -48,6 +50,7 @@ public class eRede {
   public TransactionResponse capture(Transaction transaction) throws IOException, URISyntaxException {
     CaptureTransactionService captureTransactionService = new CaptureTransactionService(store,
         transaction, logger);
+    captureTransactionService.setUserAgent(String.format(eRede.USER_AGENT, store.getFiliation()));
 
     return captureTransactionService.execute();
   }
@@ -55,6 +58,7 @@ public class eRede {
   public TransactionResponse get(String tid) throws IOException, URISyntaxException {
     GetTransactionService getTransactionService = new GetTransactionService(store, null, logger);
     getTransactionService.setTid(tid);
+    getTransactionService.setUserAgent(String.format(eRede.USER_AGENT, store.getFiliation()));
 
     return getTransactionService.execute();
   }
@@ -62,6 +66,7 @@ public class eRede {
   public TransactionResponse getByReference(String reference) throws IOException, URISyntaxException {
     GetTransactionService getTransactionService = new GetTransactionService(store, null, logger);
     getTransactionService.setReference(reference);
+    getTransactionService.setUserAgent(String.format(eRede.USER_AGENT, store.getFiliation()));
 
     return getTransactionService.execute();
   }
@@ -70,6 +75,7 @@ public class eRede {
     GetTransactionService getTransactionService = new GetTransactionService(store, null, logger);
     getTransactionService.setTid(tid);
     getTransactionService.setRefund(true);
+    getTransactionService.setUserAgent(String.format(eRede.USER_AGENT, store.getFiliation()));
 
     return getTransactionService.execute();
   }
