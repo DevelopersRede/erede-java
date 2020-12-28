@@ -13,6 +13,9 @@ public class Brand {
 	@SerializedName("returnMessage")
 	private String returnMessage;
 
+	@SerializedName("authorizationCode")
+	private String authorizationCode;
+
 	public String getName() {
 		return name;
 	}
@@ -37,6 +40,15 @@ public class Brand {
 
 	public Brand setReturnMessage(String returnMessage) {
 		this.returnMessage = returnMessage;
+		return this;
+	}
+
+	public String getAuthorizationCode() {
+		return authorizationCode;
+	}
+
+	public Brand setAuthorizationCode(String authorizationCode) {
+		this.authorizationCode = authorizationCode;
 		return this;
 	}
 

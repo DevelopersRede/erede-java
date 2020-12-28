@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 public class TestErede {
 
 	public static void main(String[] args) throws URISyntaxException, IOException {
-		// Replace "PV" adn "token"
+		// Replace "PV" and "token"
 		Store store = new Store("PV", "TOKEN", Environment.sandbox());
 		
 		// Ativa retorno das bandeiras.

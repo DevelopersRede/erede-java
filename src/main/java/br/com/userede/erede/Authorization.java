@@ -55,7 +55,7 @@ public class Authorization {
   @SerializedName("tid")
   private String tid;
 
-  @SerializedName("Brand")
+  @SerializedName("brand")
   private Brand brand;
 
   public String getAffiliation() {
@@ -77,6 +77,13 @@ public class Authorization {
   }
 
   public String getAuthorizationCode() {
+	if (brand != null) {
+		authorizationCode = brand.getAuthorizationCode();
+	}
+
+	if (authorizationCode != null) {
+		authorizationCode = authorizationCode.isEmpty() ? null : authorizationCode;
+	}
     return authorizationCode;
   }
 
