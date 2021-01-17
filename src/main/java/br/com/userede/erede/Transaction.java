@@ -2,68 +2,68 @@ package br.com.userede.erede;
 
 public class Transaction extends AbstractTransaction<Boolean> {
 
-  public static final String CREDIT = "credit";
-  public static final String DEBIT = "debit";
+    public static final String CREDIT = "credit";
+    public static final String DEBIT = "debit";
 
-  public static final Integer ORIGIN_EREDE = 1;
-  public static final Integer ORIGIN_VISA_CHECKOUT = 4;
-  public static final Integer ORIGIN_MASTERPASS = 6;
+    public static final Integer ORIGIN_EREDE = 1;
+    public static final Integer ORIGIN_VISA_CHECKOUT = 4;
+    public static final Integer ORIGIN_MASTERPASS = 6;
 
-  public Transaction(double amount, String reference) {
-    setAmount(amount);
-    setReference(reference);
-  }
-
-  public Transaction(int amount, String reference) {
-    setAmount(amount);
-    setReference(reference);
-  }
-
-  public Transaction capture() {
-    return capture(true);
-  }
-
-  public Transaction capture(Boolean capture) {
-    if (!capture && getKind().equals(Transaction.DEBIT)) {
-      throw new IllegalArgumentException("Debit transactions will always be captured");
+    public Transaction(double amount, String reference) {
+        setAmount(amount);
+        setReference(reference);
     }
 
-    setCapture(capture);
+    public Transaction(int amount, String reference) {
+        setAmount(amount);
+        setReference(reference);
+    }
 
-    return this;
-  }
+    public Transaction capture() {
+        return capture(true);
+    }
 
-  public Transaction debitCard(String cardNumber, String securityCode, String expirationMonth,
-      String expirationYear, String cardHolderName) {
+    public Transaction capture(Boolean capture) {
+        if (!capture && getKind().equals(Transaction.DEBIT)) {
+            throw new IllegalArgumentException("Debit transactions will always be captured");
+        }
 
-    setCard(cardNumber, securityCode, expirationMonth, expirationYear, cardHolderName,
-        Transaction.DEBIT);
+        setCapture(capture);
 
-    ThreeDSecure threeDSecure = new ThreeDSecure();
-    threeDSecure.setEmbedded(true);
-    threeDSecure.setOnFailure(ThreeDSecure.DECLINE_ON_FAILURE);
+        return this;
+    }
 
-    setCapture(true);
-    setThreeDSecure(threeDSecure);
+    public Transaction debitCard(String cardNumber, String securityCode, String expirationMonth,
+                                 String expirationYear, String cardHolderName) {
 
-    return this;
-  }
+        setCard(cardNumber, securityCode, expirationMonth, expirationYear, cardHolderName,
+                Transaction.DEBIT);
 
-  public Transaction creditCard(String cardNumber, String securityCode, String expirationMonth,
-      String expirationYear, String cardHolderName) {
-    return setCard(cardNumber, securityCode, expirationMonth, expirationYear, cardHolderName,
-        Transaction.CREDIT);
-  }
+        ThreeDSecure threeDSecure = new ThreeDSecure();
+        threeDSecure.setEmbedded(true);
+        threeDSecure.setOnFailure(ThreeDSecure.DECLINE_ON_FAILURE);
 
-  public Transaction setCard(String cardNumber, String securityCode, String expirationMonth,
-      String expirationYear, String cardHolderName, String kind) {
-    setCardNumber(cardNumber);
-    setSecurityCode(securityCode);
-    setExpirationMonth(expirationMonth);
-    setExpirationYear(expirationYear);
-    setCardHolderName(cardHolderName);
-    setKind(kind);
+        setCapture(true);
+        setThreeDSecure(threeDSecure);
 
-    return this;
-  }
+        return this;
+    }
+
+    public Transaction creditCard(String cardNumber, String securityCode, String expirationMonth,
+                                  String expirationYear, String cardHolderName) {
+        return setCard(cardNumber, securityCode, expirationMonth, expirationYear, cardHolderName,
+                Transaction.CREDIT);
+    }
+
+    public Transaction setCard(String cardNumber, String securityCode, String expirationMonth,
+                               String expirationYear, String cardHolderName, String kind) {
+        setCardNumber(cardNumber);
+        setSecurityCode(securityCode);
+        setExpirationMonth(expirationMonth);
+        setExpirationYear(expirationYear);
+        setCardHolderName(cardHolderName);
+        setKind(kind);
+
+        return this;
+    }
 }

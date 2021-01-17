@@ -1,56 +1,57 @@
 package br.com.userede.erede;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class Iata {
 
-  @SerializedName("code")
-  private String code;
+    @SerializedName("code")
+    private String code;
 
-  @SerializedName("departureTax")
-  private String departureTax;
+    @SerializedName("departureTax")
+    private String departureTax;
 
-  @SerializedName("flight")
-  private List<Flight> flight;
+    @SerializedName("flight")
+    private List<Flight> flight;
 
-  private void prepareFlight() {
-    if (flight == null) {
-      flight = new ArrayList<>();
+    private void prepareFlight() {
+        if (flight == null) {
+            flight = new ArrayList<>();
+        }
     }
-  }
 
-  public Iata addFlight(Flight flight) {
-    prepareFlight();
+    public Iata addFlight(Flight flight) {
+        prepareFlight();
 
-    this.flight.add(flight);
+        this.flight.add(flight);
 
-    return this;
-  }
+        return this;
+    }
 
-  public Iterator<Flight> getFlightIterator() {
-    prepareFlight();
+    public Iterator<Flight> getFlightIterator() {
+        prepareFlight();
 
-    return flight.iterator();
-  }
+        return flight.iterator();
+    }
 
-  public String getCode() {
-    return code;
-  }
+    public String getCode() {
+        return code;
+    }
 
-  public Iata setCode(String code) {
-    this.code = code;
-    return this;
-  }
+    public Iata setCode(String code) {
+        this.code = code;
+        return this;
+    }
 
-  public String getDepartureTax() {
-    return departureTax;
-  }
+    public String getDepartureTax() {
+        return departureTax;
+    }
 
-  public Iata setDepartureTax(String departureTax) {
-    this.departureTax = departureTax;
-    return this;
-  }
+    public Iata setDepartureTax(String departureTax) {
+        this.departureTax = departureTax;
+        return this;
+    }
 }
