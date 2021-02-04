@@ -63,18 +63,12 @@ abstract class AbstractTransactionService {
 		logger.log(Level.FINE, request.getRequestLine().toString());
 
 		HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
-		int status = httpResponse.getStatusLine().getStatusCode();
 
 		String response = parseResponse(httpResponse);
+		logger.log(Level.INFO, "REDE Transaction Response:[{0}]", response);
+
 		TransactionResponse transactionResponse = new Gson().fromJson(response, TransactionResponse.class);
 
-		if (status < 200 || status >= 400) {
-			RedeError redeError = new RedeError(transactionResponse.getReturnCode(),
-					transactionResponse.getReturnMessage() + " Original Request:" + request.getRequestLine().toString() + " Response: "
-							+ response);
-
-			throw new RedeException(httpResponse.getStatusLine().toString(), redeError, transactionResponse);
-		}
 		return transactionResponse;
 	}
 
