@@ -18,8 +18,8 @@ public class TestErede {
 
 		// Transação que será autorizada
 		Integer randnum = new Random().nextInt(10000 - 100) + 100;
-		Transaction transaction = new Transaction(20.99, "pedido" + randnum.toString());
-		transaction.creditCard("5448280000000007", "123", "12", "2020", "Jhon James Rambo");
+		Transaction transaction = new Transaction(new Integer(2092), "pedido" + randnum.toString());
+		transaction.creditCard("5448280000000007", "123", "12", "2028", "Jhon James Rambo");
 
 		System.out.println("Transação original: \n" + gson.toJson(transaction));
 

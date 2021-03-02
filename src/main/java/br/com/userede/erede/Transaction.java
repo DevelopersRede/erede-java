@@ -14,7 +14,7 @@ public class Transaction extends AbstractTransaction<Boolean> {
     setReference(reference);
   }
 
-  public Transaction(int amount, String reference) {
+  public Transaction(Integer amount, String reference) {
     setAmount(amount);
     setReference(reference);
   }
