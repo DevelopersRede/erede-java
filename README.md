@@ -75,3 +75,39 @@ if (transaction.getReturnCode().equals("00")) {
   System.out.printf("Transação autorizada com sucesso: %s", transaction.getTid());
 }
 ```
+
+## Utilizando 3DS 2
+
+```
+Transaction transaction = new Transaction(20.99, getReference())
+        .debitCard(
+                "5448280000000007",
+                "123",
+                "12",
+                "2023",
+                "Fulano de Tal"
+        );
+
+transaction.threeDSecure(
+        new Device(
+                1,
+                "BROWSER",
+                false,
+                500,
+                500
+        ),
+        ThreeDSecure.DECLINE_ON_FAILURE,
+        ThreeDSecure.MPI_REDE
+);
+
+transaction.addUrl("https://redirecturl.com/3ds/success", Url.THREE_D_SECURE_SUCCESS);
+transaction.addUrl("https://redirecturl.com/3ds/failure", Url.THREE_D_SECURE_FAILURE);
+
+TransactionResponse transactionResponse = (new eRede(store).create(transaction));
+
+System.out.printf(
+        "Transação com referência %s deve ser autenticada: %s\n",
+        transaction.getReference(),
+        transactionResponse.getThreeDSecure().getUrl()
+);
+```

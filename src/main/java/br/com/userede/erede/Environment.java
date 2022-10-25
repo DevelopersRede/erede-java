@@ -18,19 +18,15 @@ public class Environment {
     private String endpoint;
 
     public Environment(String baseUrl) {
-        this(baseUrl, Environment.VERSION);
-    }
-
-    private Environment(String baseUrl, String version) {
-        endpoint = String.format("%s/%s/", baseUrl, version);
+        endpoint = String.format("%s/%s/", baseUrl, Environment.VERSION);
     }
 
     public static Environment production() {
-        return new Environment(Environment.PRODUCTION, Environment.VERSION);
+        return new Environment(Environment.PRODUCTION);
     }
 
     public static Environment sandbox() {
-        return new Environment(Environment.SANDBOX, Environment.VERSION);
+        return new Environment(Environment.SANDBOX);
     }
 
     public String getIp() {

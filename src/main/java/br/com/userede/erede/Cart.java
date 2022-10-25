@@ -32,6 +32,14 @@ public class Cart {
         }
     }
 
+    public Cart addItem(Item item) {
+        prepareItems();
+
+        items.add(item);
+
+        return this;
+    }
+
     public Address address() {
         return address(Address.BOTH);
     }

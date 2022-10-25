@@ -39,7 +39,10 @@ public class Transaction extends AbstractTransaction<Boolean> {
         setCard(cardNumber, securityCode, expirationMonth, expirationYear, cardHolderName,
                 Transaction.DEBIT);
 
-        ThreeDSecure threeDSecure = new ThreeDSecure();
+        if (this.threeDSecure == null) {
+            this.threeDSecure = new ThreeDSecure();
+        }
+
         threeDSecure.setEmbedded(true);
         threeDSecure.setOnFailure(ThreeDSecure.DECLINE_ON_FAILURE);
 
@@ -51,8 +54,12 @@ public class Transaction extends AbstractTransaction<Boolean> {
 
     public Transaction creditCard(String cardNumber, String securityCode, String expirationMonth,
                                   String expirationYear, String cardHolderName) {
-        return setCard(cardNumber, securityCode, expirationMonth, expirationYear, cardHolderName,
+        setCard(cardNumber, securityCode, expirationMonth, expirationYear, cardHolderName,
                 Transaction.CREDIT);
+
+        setCapture(true);
+
+        return this;
     }
 
     public Transaction setCard(String cardNumber, String securityCode, String expirationMonth,
@@ -63,6 +70,41 @@ public class Transaction extends AbstractTransaction<Boolean> {
         setExpirationYear(expirationYear);
         setCardHolderName(cardHolderName);
         setKind(kind);
+
+        return this;
+    }
+
+    public Transaction threeDSecure(Device device) {
+        return threeDSecure(device, ThreeDSecure.DECLINE_ON_FAILURE);
+    }
+
+    public Transaction threeDSecure(Device device, String onFailure) {
+        return threeDSecure(device, onFailure, ThreeDSecure.MPI_REDE);
+    }
+
+    public Transaction threeDSecure(Device device, String onFailure, String mpi) {
+        return threeDSecure(device, onFailure, mpi, "", null);
+    }
+
+    public Transaction threeDSecure(
+            Device device,
+            String onFailure,
+            String mpi,
+            String directoryServerTransactionId,
+            String userAgent
+    ) {
+        if (this.threeDSecure == null) {
+            threeDSecure = new ThreeDSecure(device);
+        } else {
+            threeDSecure.setDevice(device);
+        }
+
+        threeDSecure.setDirectoryServerTransactionId(directoryServerTransactionId);
+        threeDSecure.setOnFailure(onFailure);
+        threeDSecure.setEmbedded(mpi.equals(ThreeDSecure.MPI_REDE));
+        threeDSecure.setUserAgent(userAgent);
+
+        setThreeDSecure(threeDSecure);
 
         return this;
     }

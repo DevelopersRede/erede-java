@@ -13,6 +13,7 @@ import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.io.BufferedReader;
@@ -61,22 +62,24 @@ abstract class AbstractTransactionService {
         logger.log(Level.FINE, request.getRequestLine().toString());
 
         try {
-            HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
-            int status = httpResponse.getStatusLine().getStatusCode();
+            try (CloseableHttpClient closeableHttpClient = HttpClientBuilder.create().build()) {
+                HttpResponse httpResponse = closeableHttpClient.execute(request);
+                int status = httpResponse.getStatusLine().getStatusCode();
 
-            String response = parseResponse(httpResponse);
-            TransactionResponse transactionResponse = new Gson()
-                    .fromJson(response, TransactionResponse.class);
+                String response = parseResponse(httpResponse);
+                TransactionResponse transactionResponse = new Gson()
+                        .fromJson(response, TransactionResponse.class);
 
-            if (status < 200 || status >= 400) {
-                RedeError redeError = new RedeError(transactionResponse.getReturnCode(),
-                        transactionResponse.getReturnMessage());
+                if (status < 200 || status >= 400) {
+                    RedeError redeError = new RedeError(transactionResponse.getReturnCode(),
+                            transactionResponse.getReturnMessage());
 
-                throw new RedeException(httpResponse.getStatusLine().toString(), redeError,
-                        transactionResponse);
+                    throw new RedeException(httpResponse.getStatusLine().toString(), redeError,
+                            transactionResponse);
+                }
+
+                return transactionResponse;
             }
-
-            return transactionResponse;
         } catch (IOException e) {
             e.printStackTrace();
         }

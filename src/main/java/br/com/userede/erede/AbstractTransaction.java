@@ -7,6 +7,8 @@ import java.util.List;
 
 public class AbstractTransaction<C> {
 
+    @SerializedName("threeDSecure")
+    protected ThreeDSecure threeDSecure;
     @SerializedName("additional")
     private Additional additional;
     @SerializedName("amount")
@@ -69,15 +71,13 @@ public class AbstractTransaction<C> {
     private Integer storageCard;
     @SerializedName("subscription")
     private Boolean subscription;
-    @SerializedName("threeDSecure")
-    private ThreeDSecure threeDSecure;
     @SerializedName("tid")
     private String tid;
     @SerializedName("urls")
     private List<Url> urls;
     @SerializedName("links")
     private List<Link> links;
-    @SerializedName("Brand")
+    @SerializedName("brand")
     private Brand brand;
 
     public Brand getBrand() {

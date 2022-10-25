@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 public class eRede {
 
-    public static final String VERSION = "1.1.0";
+    public static final String VERSION = "1.2.0";
     public static final String ARTIFACT_ID = "br.com.userede.erede";
     public static final String USER_AGENT = "eRede/" + eRede.VERSION + " (Java; %s)";
 
