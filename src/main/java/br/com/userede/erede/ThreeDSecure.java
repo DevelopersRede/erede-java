@@ -3,6 +3,7 @@ package br.com.userede.erede;
 import com.google.gson.annotations.SerializedName;
 
 public class ThreeDSecure {
+    public static final String DATA_ONLY = "DATA_ONLY";
     public static final String MPI_REDE = "mpi_rede";
     public static final String MPI_THIRD_PARTY = "mpi_third_party";
 
@@ -31,6 +32,9 @@ public class ThreeDSecure {
     private String xid;
     @SerializedName("Device")
     private Device device;
+
+    @SerializedName("challengePreference")
+    private String challengePreference;
 
     public ThreeDSecure() {
     }
@@ -145,5 +149,13 @@ public class ThreeDSecure {
     public ThreeDSecure setXid(String xid) {
         this.xid = xid;
         return this;
+    }
+
+    public String getChallengePreference() {
+        return challengePreference;
+    }
+
+    public void setChallengePreference(String challengePreference) {
+        this.challengePreference = challengePreference;
     }
 }

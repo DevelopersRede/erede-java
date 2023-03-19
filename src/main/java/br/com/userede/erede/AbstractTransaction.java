@@ -79,6 +79,12 @@ public class AbstractTransaction<C> {
     private List<Link> links;
     @SerializedName("brand")
     private Brand brand;
+    @SerializedName("brandTid")
+    private String brandTid;
+    @SerializedName("paymentFacilitatorID")
+    private String paymentFacilitatorID;
+    @SerializedName("subMerchant")
+    private SubMerchant subMerchant;
 
     public Brand getBrand() {
         return brand;
@@ -434,5 +440,38 @@ public class AbstractTransaction<C> {
     public AbstractTransaction<C> setLinks(List<Link> links) {
         this.links = links;
         return this;
+    }
+
+    public String getBrandTid() {
+        return brandTid;
+    }
+
+    public AbstractTransaction<C> setBrandTid(String brandTid) {
+        this.brandTid = brandTid;
+
+        return this;
+    }
+
+    public String getPaymentFacilitatorID() {
+        return paymentFacilitatorID;
+    }
+
+    public void setPaymentFacilitatorID(String paymentFacilitatorID) {
+        this.paymentFacilitatorID = paymentFacilitatorID;
+    }
+
+    public AbstractTransaction<C> mcc(String softDescriptor, String paymentFacilitatorID, SubMerchant subMerchant) {
+        setSoftDescriptor(softDescriptor);
+        setPaymentFacilitatorID(paymentFacilitatorID);
+        setSubMerchant(subMerchant);
+        return this;
+    }
+
+    public SubMerchant getSubMerchant() {
+        return subMerchant;
+    }
+
+    public void setSubMerchant(SubMerchant subMerchant) {
+        this.subMerchant = subMerchant;
     }
 }
